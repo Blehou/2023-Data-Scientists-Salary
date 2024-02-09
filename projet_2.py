@@ -1,126 +1,60 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 
-
-# In[2]:
-
+##### Chargement du dataset
 
 data = pd.read_csv('ds_salaries.csv')
 
-
-# In[31]:
-
+##### Phase de pre-processing
 
 data.head(6)
 
-
-# In[30]:
-
-
-data.columns
-
-
-# In[7]:
-
+Colonnes = data.columns # Afficher les colonnes du dataset
+print(Colonnes)
 
 dimension = data.shape
-print(dimension)
+print('Dimension de data = ', dimension)
 
-
-# In[8]:
-
-
+# Visualisation des valeurs manquantes
 sns.heatmap(data.isna())
 
-
-# In[11]:
-
-
+# Correlation entre les variables
 correlation = data.corr()
 print(correlation)
 
-
-# In[14]:
-
-
+# Visualisation du dataset 
 sns.pairplot(data)
 
-
-# In[20]:
-
-
-plt.figure()
-plt.subplot()
-X = data['work_year']
-Y = data['salary']
-plt.scatter(X, Y)
-plt.show()
-plt.subplot()
-X1 = data['company_size']
-Y1 = data['salary']
-plt.scatter(X1, Y1)
-plt.show()
-
-
-# In[23]:
-
-
+##### Phase 
 df = data.copy()
-
-
-# In[37]:
-
-
 salary = df['salary']
 salary.value_counts()
-
-
-# In[38]:
-
 
 job_title = df['job_title']
 job_title.value_counts()
 
-
-# In[43]:
-
-
+# Recuperation des données uniquement pour les data scientists
 data_1 = df.where(job_title == 'Data Scientist')
-data_1.head()
 
-
-# In[44]:
-
-
+#Visualisation et suppression des valeurs manquantes
 sns.heatmap(data_1.isna(), cbar = 'False')
-
-
-# In[79]:
-
-
 data_1.dropna(axis=0, inplace = True)
 data_1.reset_index(drop = True, inplace = True)
 data_1.head()
 
+sns.heatmap(data_1.isna(), cbar = 'False')
 
-# In[66]:
-
-
-data_1.shape
+#Taille du nouveau dataset
+dim = data_1.shape
+print(dim)
 
 
 # In[48]:
 
 
-sns.heatmap(data_1.isna(), cbar = 'False')
+
 
 
 # In[80]:
@@ -131,40 +65,33 @@ salary_dataScientist_in_usd = data_1['salary_in_usd']
 salary_dataScientist.value_counts()
 
 
-# In[50]:
 
 
 salary_dataScientist.max()
 
-
-# In[51]:
-
-
 salary_dataScientist.min()
-
-
-# In[52]:
-
 
 salary_dataScientist.mean()
 
 
-# In[145]:
+#Figure montrant le salaire en fonction de la taille de l'entreprise et de l'année d'expérience
+plt.figure(figsize = (8,4))
+plt.subplot(1,2,1)
 
-
-plt.figure()
-plt.subplots(figsize = (6,3))
 plt.xlabel('experience_level')
 plt.ylabel('salary')
 X = data_1['experience_level']
 Y = data_1['salary']
+
 plt.scatter(X, Y)
 plt.show()
-plt.subplots(figsize = (6,3))
+
+plt.subplot(1,2,2)
 plt.xlabel('company_size')
 plt.ylabel('salary')
 X1 = data_1['company_size']
 Y1 = data_1['salary']
+
 plt.scatter(X1, Y1)
 plt.show()
 
