@@ -15,7 +15,7 @@ Colonnes = data.columns # Afficher les colonnes du dataset
 print(Colonnes)
 
 dimension = data.shape
-print('Dimension de data = ', dimension)
+print('Dimension de data = ', dimension, '\n')
 
 # Visualisation des valeurs manquantes
 sns.heatmap(data.isna())
@@ -27,7 +27,9 @@ print(correlation)
 # Visualisation du dataset 
 sns.pairplot(data)
 
-##### Phase 
+
+##### Recuperation des données des Data Scientists
+
 df = data.copy()
 salary = df['salary']
 salary.value_counts()
@@ -35,11 +37,11 @@ salary.value_counts()
 job_title = df['job_title']
 job_title.value_counts()
 
-# Recuperation des données uniquement pour les data scientists
 data_1 = df.where(job_title == 'Data Scientist')
 
 #Visualisation et suppression des valeurs manquantes
 sns.heatmap(data_1.isna(), cbar = 'False')
+
 data_1.dropna(axis=0, inplace = True)
 data_1.reset_index(drop = True, inplace = True)
 data_1.head()
@@ -48,31 +50,20 @@ sns.heatmap(data_1.isna(), cbar = 'False')
 
 #Taille du nouveau dataset
 dim = data_1.shape
-print(dim)
-
-
-# In[48]:
-
-
-
-
-
-# In[80]:
-
+print(dim, '\n')
 
 salary_dataScientist = data_1['salary']
 salary_dataScientist_in_usd = data_1['salary_in_usd']
 salary_dataScientist.value_counts()
 
+# Salaire moyen, minimum, maximum
+Salary_max = salary_dataScientist.max()
+Salary_min = salary_dataScientist.min()
+Salary_means = salary_dataScientist.mean()
 
-
-
-salary_dataScientist.max()
-
-salary_dataScientist.min()
-
-salary_dataScientist.mean()
-
+print('salaire maximum = ', Salary_max, '\n')
+print('salaire minimum = ', Salary_min, '\n')
+print('salaire moyen = ', Salary_means, '\n')
 
 #Figure montrant le salaire en fonction de la taille de l'entreprise et de l'année d'expérience
 plt.figure(figsize = (8,4))
@@ -96,33 +87,14 @@ plt.scatter(X1, Y1)
 plt.show()
 
 
-# In[72]:
-
-
 sal_cur = data_1['salary_currency']
 sal_cur.value_counts()
 
-
-# In[91]:
-
-
 salary_dataScientist_in_usd.plot.hist()
-
-
-# In[114]:
-
 
 salary_mean = data_1.groupby(['company_location']).mean()['salary']
 salary_in_usd_mean = data_1.groupby(['company_location']).mean()['salary_in_usd']
-
-
-# In[153]:
-
-
 print(salary_mean)
-
-
-# In[155]:
 
 
 salary_mean.plot(figsize = (5,2.5), color = 'k')
@@ -132,35 +104,12 @@ salary_in_usd_mean.plot(figsize = (5,2.5), color = 'r')
 plt.ylabel('salary_in_usd_mean')
 
 
-# In[158]:
-
-
 print(salary_in_usd_mean)
 
-
-# In[159]:
-
-
 salary_in_usd_mean.mean()
-
-
-# In[138]:
-
 
 location = data_1['company_location']
 dt = data_1.where(location == 'CL')
 dt.dropna(axis = 0, inplace = True)
 dt.reset_index(drop = True, inplace = True)
-
-
-# In[139]:
-
-
-dt
-
-
-# In[ ]:
-
-
-
 
